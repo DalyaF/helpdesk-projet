@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Helpdesk - Accueil{% endblock %}
+
+{% block content %}
+    <h1 class="page-title">Système de tickets de support</h1>
+
+    <div class="d-flex justify-between" style="gap: 20px;">
+        <!-- Formulaire de création de ticket -->
+        <div class="form-container" style="flex: 1;">
+            <h2 class="mb-2">Créer un nouveau ticket</h2>
+            <form action="{{ url_for('create_ticket') }}" method="POST">
+                <div class="form-group">
+                    <label for="title">Titre *</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="priority">Priorité *</label>
+                    <select id="priority" name="priority" class="form-control" required>
+                        <option value="Basse">Basse</option>
+                        <option value="Moyenne" selected>Moyenne</option>
+                        <option value="Haute">Haute</option>
+                        <option value="Urgente">Urgente</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="department">Département *</label>
+                    <select id="department" name="department" class="form-control" required>
+                        {% for dept in departments %}
+                            <option value="{{ dept.id }}">{{ dept.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Soumettre le ticket</button>
+            </form>
+        </div>
+
+        <!-- Liste des tickets récents -->
+        <div style="flex: 2;">
+            <h2 class="mb-2">Tickets récents</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Titre</th>
+                            <th>Département</th>
+                            <th>Priorité</th>
+                            <th>Statut</th>
+                            <th>Date de création</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if tickets %}
+                            {% for ticket in tickets %}
+                                <tr>
+                                    <td>{{ ticket.id }}</td>
+                                    <td>{{ ticket.title }}</td>
+                                    <td>{{ ticket.department_name }}</td>
+                                    <td>
+                                        <span class="badge badge-{{ ticket.priority.lower() }}">
+                                            {{ ticket.priority }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-{{ ticket.status.lower().replace(' ', '-') }}">
+                                            {{ ticket.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ ticket.created_at.strftime('%d-%m-%Y %H:%M') }}</td>
+                                    <td>
+                                        <a href="{{ url_for('view_ticket', ticket_id=ticket.id) }}" class="btn btn-info">Voir</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center">Aucun ticket disponible</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

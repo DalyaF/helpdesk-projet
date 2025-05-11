@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Tickets</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Créer un Nouveau Ticket</h1>
+        <form method="POST" action="/submit_ticket" class="ticket-form">
+            <div class="form-group">
+                <label for="titre">Titre du Ticket</label>
+                <input type="text" id="titre" name="titre" placeholder="Entrez le titre du ticket" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" placeholder="Décrivez votre problème" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="priorite">Priorité</label>
+                <select id="priorite" name="priorite" required>
+                    <option value="Basse">Basse</option>
+                    <option value="Moyenne">Moyenne</option>
+                    <option value="Haute">Haute</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Soumettre</button>
+        </form>
+    </div>
+</body>
+</html>
